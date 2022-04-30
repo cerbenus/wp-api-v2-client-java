@@ -1,6 +1,0 @@
-wordpress:
-  username: "docker"
-  password: "docker!"
-  baseUrl: "http://docker.dev"
-
-debug: "true"

@@ -1,13 +1,12 @@
 package com.afrozaar.wordpress.wpapi.v2.exception;
 
-import static java.lang.String.format;
-
-import org.springframework.web.client.HttpStatusCodeException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.Collection;
 import java.util.Optional;
+
+import static java.lang.String.format;
 
 public class WpApiParsedException extends Exception {
 

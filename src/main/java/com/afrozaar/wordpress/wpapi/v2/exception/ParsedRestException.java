@@ -1,5 +1,7 @@
 package com.afrozaar.wordpress.wpapi.v2.exception;
 
+import com.fasterxml.jackson.core.JsonParser;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -94,6 +96,9 @@ public class ParsedRestException {
     };
 
     public static ParsedRestException of(HttpStatusCodeException cause) {
+        if (HttpStatus.UNAUTHORIZED == cause.getStatusCode()) {
+            return new ParsedRestException(cause, cause.getStatusCode().name(), cause.getMessage(), "", Collections.emptyList());
+        }
         try {
             Map exceptionMap = getMapper().readValue(cause.getResponseBodyAsByteArray(), Map.class);
             final String errorMessage = (String) exceptionMap.get(FIELD_MESSAGE);
@@ -138,6 +143,10 @@ public class ParsedRestException {
     }
 
     private static ObjectMapper getMapper() {
-        return mapper == null ? mapper = new ObjectMapper() : mapper;
+        if (mapper == null) {
+            mapper = new ObjectMapper();
+            mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
+        }
+        return mapper;
     }
 }
